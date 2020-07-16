@@ -12,7 +12,11 @@ class Events {
         if (this.eventObj.hasOwnProperty(topic)) {
             const fn = this.eventObj[topic];
             fn.forEach(fn => {
-                fn.apply(this, args);
+                try {
+                    fn.apply(this, args);
+                } catch (ex) {
+                    console.log(ex.message);
+                }
             });
         }
     }
@@ -75,6 +79,7 @@ class XiaoMing implements Reader {
     private readNews(arg) {
         console.log(`今天新闻是：${arg}`);
         console.log('今天又下雨啊，出门要记得带伞！');
+        throw new Error('发生错误');
     }
 }
 class LaoWang implements Reader {
@@ -96,6 +101,5 @@ const xiaoMing = new XiaoMing();
 xiaoMing.subscribeNews();
 const laoWang = new LaoWang();
 laoWang.subscribeNews();
-laoWang.unscribeNews();
 const huPu = new HuPuNewsOffice();
 huPu.releaseNews();
